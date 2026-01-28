@@ -64,7 +64,10 @@ export const handler = async (event: any, context: any): Promise<any> => {
 };
 
 // For local development
-if (process.argv[1] && import.meta.url.endsWith(process.argv[1])) {
+if (
+  process.env.NODE_ENV === 'development' ||
+  (process.argv[1] && import.meta.url.endsWith(process.argv[1]))
+) {
   const PORT = process.env.PORT || 3000;
   async function startLocal(): Promise<void> {
     const app = await NestFactory.create(AppModule);
