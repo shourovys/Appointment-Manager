@@ -20,12 +20,12 @@ const strictTypeScriptConfig = {
     '@typescript-eslint/strict-boolean-expressions': 'error',
     '@typescript-eslint/prefer-nullish-coalescing': 'error',
     '@typescript-eslint/prefer-optional-chain': 'error',
-    
+
     // Import rules
     'import/no-cycle': 'error',
     'import/no-relative-packages': 'error',
     'import/no-self-import': 'error',
-    
+
     // General strict rules
     'no-console': 'warn',
     'no-debugger': 'error',
@@ -34,7 +34,7 @@ const strictTypeScriptConfig = {
     'prefer-const': 'error',
     'prefer-arrow-callback': 'error',
     'prefer-template': 'error',
-    
+
     // Naming conventions
     '@typescript-eslint/naming-convention': [
       'error',
@@ -87,7 +87,7 @@ const strictTypeScriptConfig = {
         trailingUnderscore: 'allow',
       },
     ],
-    
+
     // Performance and maintainability
     '@typescript-eslint/prefer-readonly': 'error',
     '@typescript-eslint/prefer-readonly-parameter-types': 'off', // Too strict for now
@@ -98,7 +98,7 @@ const strictTypeScriptConfig = {
     '@typescript-eslint/no-unnecessary-condition': 'error',
     '@typescript-eslint/no-unnecessary-type-arguments': 'error',
     '@typescript-eslint/no-unnecessary-type-assertion': 'error',
-    
+
     // Dependencies and imports
     '@typescript-eslint/no-var-requires': 'error',
     'import/no-extraneous-dependencies': [
@@ -114,7 +114,7 @@ const strictTypeScriptConfig = {
         ],
       },
     ],
-    
+
     // Code style consistency
     'padding-line-between-statements': [
       'error',
@@ -122,7 +122,7 @@ const strictTypeScriptConfig = {
       { blankLine: 'always', prev: ['const', 'let', 'var'], next: '*' },
       { blankLine: 'any', prev: ['const', 'let', 'var'], next: ['const', 'let', 'var'] },
     ],
-    
+
     // Error handling
     '@typescript-eslint/no-floating-promises': 'error',
     '@typescript-eslint/no-misused-promises': 'error',
@@ -172,6 +172,16 @@ export default tseslint.config(
       '@typescript-eslint/explicit-function-return-type': 'off',
       'no-console': 'off',
       'import/no-extraneous-dependencies': 'off',
+    },
+  },
+  {
+    files: ['src/main.ts'],
+    rules: {
+      // Relax serverless handler rules - must come after strictTypeScriptConfig
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-unsafe-assignment': 'off',
+      '@typescript-eslint/no-unsafe-call': 'off',
+      'no-console': 'off',
     },
   },
 );
