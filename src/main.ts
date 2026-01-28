@@ -46,10 +46,21 @@ async function bootstrap(): Promise<any> {
 // Lambda handler for Netlify Functions
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const handler = async (event: any, context: any): Promise<any> => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const handler = await bootstrap();
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-  return handler(event, context);
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const serverlessHandler = await bootstrap();
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    return serverlessHandler(event, context);
+  } catch (error) {
+    console.error('Handler error:', error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        message: 'Internal server error',
+        error: error instanceof Error ? error.message : String(error),
+      }),
+    };
+  }
 };
 
 // For local development

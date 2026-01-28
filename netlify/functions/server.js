@@ -1,7 +1,12 @@
 // Netlify Function entry point
 // This file is copied to dist/functions/ during build
-const { handler } = require('../main.js');
+import main from '../main.js';
 
-exports.handler = async (event, context) => {
-  return handler(event, context);
+if (!main.handler) {
+  console.error('Handler not found in main.js');
+  throw new Error('Handler not exported from main.js');
+}
+
+export const handler = async (event, context) => {
+  return main.handler(event, context);
 };
