@@ -11,6 +11,7 @@
   },
   "scripts": {
     "build": "npx nest build",
+    "copy:function": "copyfiles -f netlify/functions/* dist/functions/ || mkdir -p dist/functions && cp netlify/functions/* dist/functions/",
     "format": "prettier --write \"{src,apps,libs,test}/**/*.ts\"",
     "format:check": "prettier --check \"{src,apps,libs,test}/**/*.ts\"",
     "start": "nest start",
@@ -51,6 +52,7 @@
     "passport-jwt": "^4.0.1",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
+    "serverless-http": "^4.0.0",
     "winston": "^3.19.0",
     "zod": "^4.3.5"
   },

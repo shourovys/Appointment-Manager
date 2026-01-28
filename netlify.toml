@@ -1,13 +1,13 @@
 [build]
-  command = "npm run build"
+  command = "npm run build && npm run copy:function"
   publish = "dist"
-  functions = "netlify/functions"
+  functions = "dist/functions"
 
 [build.environment]
   NODE_VERSION = "20"
 
 [functions]
-  directory = "netlify/functions"
+  directory = "dist/functions"
 
 [[redirects]]
   from = "/api/*"
