@@ -11,7 +11,7 @@
   },
   "scripts": {
     "build": "npx nest build",
-    "copy:function": "copyfiles -f netlify/functions/* dist/functions/ || mkdir -p dist/functions && cp netlify/functions/* dist/functions/",
+    "copy:function": "mkdir -p dist/functions && cp netlify/functions/* dist/functions/",
     "format": "prettier --write \"{src,apps,libs,test}/**/*.ts\"",
     "format:check": "prettier --check \"{src,apps,libs,test}/**/*.ts\"",
     "start": "nest start",
