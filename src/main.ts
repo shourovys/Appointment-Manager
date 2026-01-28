@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { ExpressAdapter } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import express from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import serverlessHttp from 'serverless-http';
 import { AppModule } from './app.module.js';
 import { TransformInterceptor } from './common/interceptors/transform.interceptor.js';
@@ -16,8 +16,30 @@ async function bootstrap(): Promise<any> {
     const expressApp = express();
     const app = await NestFactory.create(AppModule, new ExpressAdapter(expressApp));
 
-    // Enable CORS
-    app.enableCors();
+    // Handle CORS explicitly before other middleware
+    const corsMiddleware = (req: Request, res: Response, next: NextFunction): void => {
+      res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
+      res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
+      res.header(
+        'Access-Control-Allow-Headers',
+        'Content-Type, Authorization, X-Request-ID, Access-Control-Request-Method, Access-Control-Request-Headers',
+      );
+      res.header('Access-Control-Allow-Credentials', 'true');
+      if (req.method === 'OPTIONS') {
+        res.sendStatus(200);
+        return;
+      }
+      next();
+    };
+    expressApp.use(corsMiddleware);
+
+    // Enable CORS with specific configuration
+    app.enableCors({
+      origin: true,
+      methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+      allowedHeaders: ['Content-Type', 'Authorization', 'X-Request-ID'],
+      credentials: true,
+    });
 
     // Set global prefix for all routes
     app.setGlobalPrefix('api');
@@ -72,8 +94,30 @@ if (
   async function startLocal(): Promise<void> {
     const app = await NestFactory.create(AppModule);
 
-    // Enable CORS
-    app.enableCors();
+    // Handle CORS explicitly before other middleware
+    const corsMiddleware = (req: Request, res: Response, next: NextFunction): void => {
+      res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
+      res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
+      res.header(
+        'Access-Control-Allow-Headers',
+        'Content-Type, Authorization, X-Request-ID, Access-Control-Request-Method, Access-Control-Request-Headers',
+      );
+      res.header('Access-Control-Allow-Credentials', 'true');
+      if (req.method === 'OPTIONS') {
+        res.sendStatus(200);
+        return;
+      }
+      next();
+    };
+    app.use(corsMiddleware);
+
+    // Enable CORS with specific configuration
+    app.enableCors({
+      origin: true,
+      methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+      allowedHeaders: ['Content-Type', 'Authorization', 'X-Request-ID'],
+      credentials: true,
+    });
 
     // Set global prefix for all routes
     app.setGlobalPrefix('api');
